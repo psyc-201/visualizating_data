@@ -1,8 +1,8 @@
 ---
 title: 'ggplot2 intro exercises'
 author: "Mike Frank, Edited Bria Long"
-date: "Fall 2024"
-output: html
+date: "Fall 2026"
+format: html
 ---
   
 This is an exercise on using `ggplot2` that was adapted by Mike Frank
@@ -15,42 +15,37 @@ library(tidyverse)
 library(ggthemes) # allows you to add new color themes
 ```
 
-# Exploring ggplot2 using `qplot`
-
-We'll start by using `qplot`. `qplot` is the easy interface, meant to replace `plot`. You can give it simple `qplot(x,y)` examples, or slightly more complex examples like `qplot(x, y, col=grp, data=d)`. 
+# A first look with `ggplot()`
 
 We're going to be using the `diamonds` dataset. This is a set of measurements of diamonds, along with their price etc.
 
+Every `ggplot2` plot has the same three ingredients: (A) a data frame, (B) an aesthetic mapping (`aes()`) from variables in your data to visual properties of the plot (x, y, color, shape...), and (C) one or more geoms that say *how* to draw them.
+
+(Older tutorials start with `qplot()`, a shortcut function. It was deprecated in ggplot2 3.4.0, so we'll use `ggplot()` from the start.)
+
 ```{r}
 head(diamonds)
-qplot(diamonds$carat, diamonds$price)
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point()
 ```
 
-This allows you to make a histogram
-```{r}
-qplot(diamonds$price)
-```
-
-
-Scatter plots are trivial, and easy to add features to. The code below modifies this plot so that it uses the dataframe rather than working from variables in the general namespace (good to get away from retyping `diamonds$` every time you reference a variable). 
+Making a histogram only needs an `x` mapping:
 
 ```{r}
-qplot(data = diamonds, price)
+ggplot(diamonds, aes(x = price)) +
+  geom_histogram()
 ```
 
-Now you can try adding clarity and cut, using shape and color as your visual variables. 
+Now try adding clarity and cut, using shape and color as your visual variables. (You'll get some warnings here: ggplot is telling you this is a hard plot to read! We'll fix that with facets below.)
 
 ```{r}
-qplot(
-  data = diamonds,
-  x = carat, y = price, shape = clarity, color = cut
-)
+ggplot(diamonds, aes(x = carat, y = price, shape = clarity, color = cut)) +
+  geom_point()
 ```
-
 
 # More complex with ggplot
 
-`ggplot` is just a way of building `qplot` calls up more systematically. It's sometimes easier to use and sometimes a bit more complicated. What I want to show off here is the functionality of being able to build up complex plots with multiple elements. You can actually do this using `qplot` pretty easily, but there are a few things that are hard to do. 
+What I want to show off here is the functionality of being able to build up complex plots with multiple elements, one layer at a time. 
 
 `ggplot` is the basic call, where you specify A) a dataframe and B) an aesthetic (`aes`) mapping from variables in the plot space to variables in the dataset. 
 
@@ -74,7 +69,7 @@ Now you can try writing this as a single set of additions (e.g. one line of R co
 
 # Facets
 
-Let's try out another version of the `qplot` example above. Here's the last qplot example now done ggplot.
+Let's return to the busy plot from above. Here's that last example again.
 
 ```{r}
 ggplot(

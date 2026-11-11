@@ -1,6 +1,6 @@
 ---
 title: "GGplot Tutorial: Part 2"
-author: "Tobi Gerstenberg, edited by Bria Long for Psych 201a/CSS 204"
+author: "Tobi Gerstenberg, edited by Bria Long for Psych 201a (Fall 2026)"
 format: html
 editor: visual
 ---
@@ -11,7 +11,7 @@ In this lecture, we will lift our `ggplot2` skills to the next level!
 
 ## Learning objectives
 
--   Deciding what plot is appropriate for what kind of data.\
+-   Deciding what plot is appropriate for what kind of data.
 -   Customizing plots: Take a sad plot and make it better.
 -   Saving plots.
 -   Making figure panels.
@@ -24,7 +24,7 @@ In this lecture, we will lift our `ggplot2` skills to the next level!
 Let's first install the new packages that you might not have yet.
 
 ```{r, eval=FALSE}
-install.packages(c("gganimate", "gapminder", "ggridges", "devtools", "png", "gifski", "patchwork"))
+install.packages(c("gganimate", "gapminder", "ggridges", "png", "gifski", "patchwork"))
 ```
 
 Now, let's load the packages that we need for these excercise
@@ -102,7 +102,9 @@ Often we want to compare the data from many different conditions. And sometimes,
 
 #### Means and individual data points
 
-```{r diamonds-price, fig.cap='Price of differently colored diamonds. Large yellow circles are means, small black circles are individual data poins, and the error bars are 95% bootstrapped confidence intervals.'}
+```{r}
+#| label: fig-diamonds-price
+#| fig-cap: "Price of differently colored diamonds. Large yellow circles are means, small blue circles are individual data points, and the error bars are 95% bootstrapped confidence intervals."
 ggplot(data = df.diamonds[1:150, ],
        mapping = aes(x = color,
                      y = price)) +
@@ -121,11 +123,18 @@ ggplot(data = df.diamonds[1:150, ],
              size = 2)
 ```
 
-Note that I'm only plotting the first 150 entries of the data here by setting `data = df.diamonds[1:150,]` in `gpplot()`.
+Note that I'm only plotting the first 150 entries of the data here by setting `data = df.diamonds[1:150,]` in `ggplot()`.
 
-This plot shows means, bootstrapped confidence intervals, and individual data points. I've used two tricks to make the individual data points easier to see. 1. I've set the `alpha` attribute to make the points somewhat transparent. 2. I've used the `position_jitter()` function to jitter the points horizontally. 3. I've used `shape = 21` for displaying the mean. For this circle shape, we can set a `color` and `fill` (see Figure \@ref(fig:plotting-shapes))
+This plot shows means, bootstrapped confidence intervals, and individual data points. I've used three tricks to make the individual data points easier to see.
 
-```{r plotting-shapes, echo=FALSE, fig.cap="Different shapes that can be used for plotting."}
+1. I've set the `alpha` attribute to make the points somewhat transparent.
+2. I've used the `position_jitter()` function to jitter the points horizontally.
+3. I've used `shape = 21` for displaying the mean. For this circle shape, we can set a `color` and `fill` (see @fig-plotting-shapes)
+
+```{r}
+#| label: fig-plotting-shapes
+#| echo: false
+#| fig-cap: "Different shapes that can be used for plotting."
 # plot showing the different shapes 
 df.plot = tibble(x = rep(1:5, 5),
                  y = rep(seq(5, 1, -1), each = 5),
@@ -166,19 +175,25 @@ What do boxplots show? Here adapted from `help(geom_boxplot())`:
 
 Personally, I'm not a big fan of boxplots. Many data sets are consistent with the same boxplot.
 
-```{r box-plot-distributions1, echo=FALSE, fig.cap="Box plot distributions. Source: https://www.autodeskresearch.com/publications/samestats"}
+```{r}
+#| label: fig-box-plot-distributions1
+#| echo: false
+#| fig-cap: "Box plot distributions. Source: https://www.autodeskresearch.com/publications/samestats"
 include_graphics("figures/boxplots.gif")
 ```
 
-Figure \@ref(fig:box-plot-distributions1) shows three different distributions that each correspond to the same boxplot.
+@fig-box-plot-distributions1 shows three different distributions that each correspond to the same boxplot.
 
 If there is not too much data, I recommend to plot jittered individual data points instead. If you do have a lot of data points, then violin plots can be helpful.
 
-```{r box-plot-distributions2, echo=FALSE, fig.cap="Boxplot distributions. Source: https://www.autodeskresearch.com/publications/samestats"}
+```{r}
+#| label: fig-box-plot-distributions2
+#| echo: false
+#| fig-cap: "Boxplot distributions. Source: https://www.autodeskresearch.com/publications/samestats"
 include_graphics("figures/box_violin.gif")
 ```
 
-Figure \@ref(fig:box-plot-distributions2) shows the same raw data represented as jittered dots, boxplots, and violin plots.
+@fig-box-plot-distributions2 shows the same raw data represented as jittered dots, boxplots, and violin plots.
 
 #### Violin plots
 
@@ -229,27 +244,18 @@ ggplot(data = df.diamonds,
 
 #### Practice plot 1
 
-Try to make the plot shown in Figure \@ref(fig:visualization2-practice1). Here is a tip:
+Try to make the plot shown in @fig-visualization2-practice1. Here is a tip:
 
 -   For the data argument in `ggplot()` use: `df.diamonds[1:10000, ]` (this selects the first 10000 rows).
 
 ```{r}
-
-ggplot(data=df.diamonds[1:10000, ], aes(x=cut, y=price)) +
-  geom_violin() +
-  geom_point(alpha = 0.1,
-             color = "black",
-             position = position_jitter(width = 0.1,
-                                        height = 0),
-             size = 2) +
-  stat_summary(fun = "mean",
-               color = "blue",
-               fill = "blue",
-               size = .5)  
-
+# make practice plot 1 here
 ```
 
-```{r visualization2-practice1, echo=FALSE, fig.cap='Practice plot 1.'}
+```{r}
+#| label: fig-visualization2-practice1
+#| echo: false
+#| fig-cap: "Practice plot 1."
 include_graphics("figures/vis2_practice_plot1.png")
 ```
 
@@ -388,9 +394,12 @@ ggplot(data = df.plot,
         plot.margin = margin(r = 1, unit = "in"))
 ```
 
-###  Practice Plot 2
-```{r}
+#### Practice plot 2: your project figure
 
+Sketch the main figure for your final project using your pilot (or simulated) data. Follow the three principles from lecture: **show the experiment** (all and only your planned conditions), **show the data** (individual participants), and **facilitate the key comparison** (means with 95% CIs, conditions you want compared placed next to each other). Then fix the labels: descriptive axis titles with units, and a reference line (e.g., chance) if one makes sense.
+
+```{r}
+# make your project figure here
 ```
 
 ## Customizing plots
@@ -509,7 +518,7 @@ ggplot(data = df.diamonds,
                width = 0.85) +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
-               size = 1.5) +
+               linewidth = 1.5) +
   labs(x = "cut")
 ```
 
@@ -519,7 +528,10 @@ The `reorder()` function helps us to do just that. Now, the results are ordered 
 
 Legends form an important part of many figures. However, it is often better to avoid legends if possible, and directly label the data. This way, the reader doesn't have to look back and forth between the plot and the legend to understand what's going on.
 
-Here, we'll look into a few aspects that come up quite often. There are two main functions to manipulate legends with ggplot2 1. `theme()` (there are a number of arguments starting with `legend.`) 2. `guide_legend()`
+Here, we'll look into a few aspects that come up quite often. There are two main functions to manipulate legends with ggplot2:
+
+1. `theme()` (there are a number of arguments starting with `legend.`)
+2. `guide_legend()`
 
 Let's make a plot with a legend.
 
@@ -596,7 +608,7 @@ p1 = ggplot(data = df.diamonds,
                fill = "lightblue") +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
-               size = 1)
+               linewidth = 1)
 print(p1)
 
 p2 = ggplot(data = df.diamonds,
@@ -607,7 +619,7 @@ p2 = ggplot(data = df.diamonds,
                fill = "lightblue") +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
-               size = 1)
+               linewidth = 1)
 
 ggsave(filename = "figures/diamond_plot.pdf",
        plot = p1,
@@ -657,7 +669,7 @@ p3 = ggplot(data = df.diamonds,
                width = 0.85) +
   stat_summary(fun.data = "mean_cl_boot",
                geom = "linerange",
-               size = 1.5) + 
+               linewidth = 1.5) + 
   scale_x_discrete(labels = c("fair", "good", "very\ngood", "premium", "ideal")) +
   labs(title = "Price as a function of cut", 
        subtitle = "Note: The price is in US dollars",
@@ -765,7 +777,9 @@ ggplot(data = gapminder,
 
 This takes a while to run but it's worth the wait. The plot shows the relationship between GDP per capita (on the x-axis) and life expectancy (on the y-axis) changes across different years for the countries of different continents. The size of each dot represents the population size of the respective country. And different countries are shown in different colors. This animation is not super useful yet in that we don't know which continents and countries the different dots represent. I've added a label to the United States, China, and India.
 
-Note how little is required to define the `gganimate`-specific information! The `{frame_time}` variable changes the title for each frame. The `transition_time()` variable is set to `year`, and the kind of transition is set as 'linear' in `ease_aes()`. I've saved the animation as a gif in the figures folder. We won't have time to go into more detail here but I encourage you to play around with `gganimate`. It's fun, looks cool, and (if done well) makes for a great slide in your next presentation!
+Note how little is required to define the `gganimate`-specific information! The `{frame_time}` variable changes the title for each frame. The `transition_time()` variable is set to `year`, and the kind of transition is set as 'linear' in `ease_aes()`. I've saved the animation as a gif in the figures folder.
+
+We won't have time to go into more detail here but I encourage you to play around with `gganimate`. It's fun, looks cool, and (if done well) makes for a great slide in your next presentation!
 
 ### Shiny apps
 
@@ -790,9 +804,12 @@ snippet sndf
 
 To make a bar plot, I now only need to type `snbar` and then hit TAB to activate the snippet. I can then cycle through the bits in the code that are marked with `${Number:word}` by hitting TAB again.
 
-In RStudio, you can change and add snippets by going to Tools --\> Global Options... --\> Code --\> Edit Snippets. Make sure to set the tick mark in front of Enable Code Snippets (see Figure \@ref(fig:code-snippets)). ).
+In RStudio, you can change and add snippets by going to Tools --\> Global Options... --\> Code --\> Edit Snippets. Make sure to set the tick mark in front of Enable Code Snippets (see @fig-code-snippets).
 
-```{r code-snippets, echo=FALSE, fig.cap="Enable code snippets."}
+```{r}
+#| label: fig-code-snippets
+#| echo: false
+#| fig-cap: "Enable code snippets."
 include_graphics("figures/snippets.png")
 ```
 
