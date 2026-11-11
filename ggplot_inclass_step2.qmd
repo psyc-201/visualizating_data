@@ -394,14 +394,6 @@ ggplot(data = df.plot,
         plot.margin = margin(r = 1, unit = "in"))
 ```
 
-#### Practice plot 2: your project figure
-
-Sketch the main figure for your final project using your pilot (or simulated) data. Follow the three principles from lecture: **show the experiment** (all and only your planned conditions), **show the data** (individual participants), and **facilitate the key comparison** (means with 95% CIs, conditions you want compared placed next to each other). Then fix the labels: descriptive axis titles with units, and a reference line (e.g., chance) if one makes sense.
-
-```{r}
-# make your project figure here
-```
-
 ## Customizing plots
 
 So far, we've seen a number of different ways of plotting data. Now, let's look into how to customize the plots. For example, we may want to change the axis labels, add a title, increase the font size. `ggplot2` let's you customize almost anything.
@@ -787,7 +779,7 @@ The package [`shiny`](https://shiny.rstudio.com/) makes it relatively easy to cr
 
 ### Defining snippets
 
-Often, we want to create similar plots over and over again. One way to achieve this is by finding the original plot, copy and pasting it, and changing the bits that need changing. Another more flexible and faster way to do this is by using snippets. Snippets are short pieces of code that
+Often, we want to create similar plots over and over again. One way to achieve this is by finding the original plot, copy and pasting it, and changing the bits that need changing. Another more flexible and faster way to do this is by using snippets. Snippets are short pieces of code that RStudio fills in for you when you type a keyword and hit TAB.
 
 Here are some snippets I use:
 
@@ -802,7 +794,7 @@ snippet sndf
 		${0}
 ```
 
-To make a bar plot, I now only need to type `snbar` and then hit TAB to activate the snippet. I can then cycle through the bits in the code that are marked with `${Number:word}` by hitting TAB again.
+To start a new plot, I now only need to type `sngg` and then hit TAB to activate the snippet. I can then cycle through the bits in the code that are marked with `${Number:word}` by hitting TAB again.
 
 In RStudio, you can change and add snippets by going to Tools --\> Global Options... --\> Code --\> Edit Snippets. Make sure to set the tick mark in front of Enable Code Snippets (see @fig-code-snippets).
 
@@ -821,6 +813,25 @@ usethis::edit_rstudio_snippets()
 ```
 
 This command opens up a separate tab in RStudio called `r.snippets` so that you can make new snippets and adapt old ones more quickly. Take a look at the snippets that RStudio already comes with. And then, make some new ones! By using snippets you will be able to avoid typing the same code over and over again, and you won't have to memorize as much, too.
+
+## Practice plot 2: your project figure
+
+Sketch the main figure for your final project using your pilot (or simulated) data. Follow the three principles from lecture: **show the experiment** (all and only your planned conditions), **show the data** (individual participants), and **facilitate the key comparison** (means with 95% CIs, conditions you want compared placed next to each other). Then fix the labels: descriptive axis titles with units (see [Customizing plots](#customizing-plots)), and a reference line such as chance (`geom_hline()`) if one makes sense. Save it with `ggsave()` (see [Saving plots](#saving-plots)).
+
+No pilot data yet? Start from this simulated data set and change the conditions, outcome, and effect sizes to match your design:
+
+```{r, eval=FALSE}
+set.seed(1)
+df.sim = expand_grid(participant = 1:20,
+                     condition = c("control", "treatment")) %>%
+  mutate(accuracy = rnorm(n(),
+                          mean = ifelse(condition == "treatment", 0.75, 0.65),
+                          sd = 0.1))
+```
+
+```{r}
+# make your project figure here
+```
 
 ## Additional resources
 
